@@ -1,6 +1,6 @@
 from models.models import build_dnn_model, build_convnet_model, build_vgg_model, build_resnet_model, build_convnet_hyper_model
 from models.train import train_and_evaluate_model, tune_learning_rate
-from utils.visualizate_metrics import visualize_model_performance_and_features
+from utils.visualizate_metrics import visualize_model_performance_and_features, visualize_feature_maps
 
 # Define the default learning rate
 DEFAULT_LR = 0.001
@@ -8,7 +8,6 @@ DEFAULT_LR = 0.001
 if __name__ == "__main__":
     print("Starting training with the default learning rate...")
 
-    
     # Train and evaluate DNN model with default learning rate
     dnn_model = build_dnn_model()
     train_and_evaluate_model(dnn_model, "DNN_Default_LR", learning_rate=DEFAULT_LR)
@@ -46,11 +45,13 @@ if __name__ == "__main__":
         # ResNet50 model with dynamic learning rate
         resnet_model = build_resnet_model()
         train_and_evaluate_model(resnet_model, f"ResNet50_LR_{lr}", learning_rate=lr)
-
+        
     
     # Train the best ConvNet model with the optimal learning rate
     convnet_model = build_convnet_model()
-    train_and_evaluate_model(convnet_model, "ConvNet_AutoTuned_LR", learning_rate=tune_learning_rate())
+    #train_and_evaluate_model(convnet_model, "ConvNet_AutoTuned_LR", learning_rate=tune_learning_rate())
+    train_and_evaluate_model(convnet_model, "ConvNet_AutoTuned_LR", learning_rate=0.001)
 
     # Now visualize performance and features
     visualize_model_performance_and_features(convnet_model, "ConvNet_BestModel")
+    visualize_feature_maps(convnet_model, "ConvNet_BestModel")
